@@ -4,8 +4,21 @@
 		:class="[{'no-scroll':scrollTop == 0 && nowPath == '/home'},{'fix-header':nowPath == '/home'}]"
 	>
 		<ul class="nav-link">
-			<li class="nav-link-item header-logo">
-				<img src="@/assets/image/logoPE.png" />
+			<li class="nav-link-item header-logo" v-if="nowPath == '/home'">
+				<div>
+					<transition name="fade">
+						<img src="@/assets/image/logo-pe-white.png" v-show="scrollTop == 0" />
+					</transition>
+					<transition name="fade">
+						<img src="@/assets/image/logo-pe-blue.png" v-show="scrollTop != 0" />
+					</transition>
+				</div>
+				<span>我爱运动</span>
+			</li>
+			<li class="nav-link-item header-logo" v-else>
+				<div>
+					<img src="@/assets/image/logo-pe-blue.png" />
+				</div>
 				<span>我爱运动</span>
 			</li>
 			<li class="nav-link-item">
@@ -13,6 +26,9 @@
 			</li>
 		</ul>
 		<ul class="nav-user">
+			<li class="nav-link-item" @click="routerPush('/video_upload')">
+				<img class="user-head" src="@/assets/image/video_upload.jpg" />
+			</li>
 			<li class="nav-link-item">
 				<img class="user-head" src="@/assets/image/default_head.jpg" />
 			</li>
@@ -22,10 +38,9 @@
 			<li class="nav-link-item">
 				<span @click="routerPush('/login/register_tel')">注册</span>
 			</li>
-			<!-- 未开发该功能，故不予显示 -->
-			<!-- <li class="nav-user">
-				<el-button class="contribute" type="primary">投稿</el-button>
-			</li>-->
+			<li class="nav-user">
+				<el-button class="contribute" type="primary" @click="routerPush('/video_upload')">投稿</el-button>
+			</li>
 		</ul>
 	</div>
 </template>
@@ -117,6 +132,17 @@ export default {
 	transition: color 0.5s;
 	-webkit-transition: 0.5s;
 }
+.header-logo div {
+	position: relative;
+	height: 32px;
+	width: 32px;
+}
+.header-logo div img:nth-child(0) {
+	position: static;
+}
+.header-logo div img:nth-child(1) {
+	position: absolute;
+}
 
 /* nav右栏 用户相关操作 */
 .nav-user {
@@ -163,5 +189,14 @@ export default {
 .no-scroll ul li span {
 	color: #ffffff;
 	font-weight: bold;
+}
+
+/* vue单元素动画 */
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+	opacity: 0;
 }
 </style>
